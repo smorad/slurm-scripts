@@ -1,4 +1,3 @@
-set -x
 FS_PATH=/rds/user/sm2558/hpc-work/
 CONDA_PATH=$FS_PATH/conda_envs/rllib
 REPO_PATH=$FS_PATH/repos
@@ -15,5 +14,10 @@ conda init bash
 source ~/.bashrc
 conda deactivate
 conda activate $CONDA_PATH
-echo "Environment is $(env)"
+mkdir -p $STORAGE_PATH && chmod a+wr $STORAGE_PATH
+mkdir -p $WANDB_DIR/wandb && chmod a+wr $WANDB_DIR/wandb
+mkdir -p 
+set -x
+echo "POPGym Environment is $(env | grep -i POPGYM)"
+echo "WANDB Environment is $(env | grep -i WANDB)"
 python "$REPO_PATH/popgym/popgym/baselines/ppo.py" 

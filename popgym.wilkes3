@@ -10,12 +10,12 @@
 
 #! sbatch directives begin here ###############################
 #! Name of the job:
-#SBATCH -J rllib_prepare_env
+#SBATCH -J popgym
 #SBATCH -A PROROK-SL3-GPU
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:1
-#SBATCH --time=08:00:00
+#SBATCH --time=12:00:00
 #SBATCH --mail-type=NONE
 #SBATCH --no-requeue
 #SBATCH --cpus-per-task=32
@@ -48,11 +48,15 @@ module load miniconda/3
 application="job_scripts/popgym.sh"
 
 #! Run options for the application:
-export POPGYM_EXPERIMENT="ALL_NOISY_ENVS"
-#export POPGYM_NUM_SPLITS=2
-#export POPGYM_SPLIT_ID=1
-export POPGYM_PROJECT="popgym-noisy-all"
-export POPGYM_GPU=0.15
+#export POPGYM_EXPERIMENT="ALL_GAME_ENVS"
+#export POPGYM_NUM_SPLITS=1
+#export POPGYM_SPLIT_ID=0
+#export POPGYM_PROJECT="popgym-all-game"
+UNIQ_SUFFIX=${POPGYM_EXPERIMENT}-${POPGYM_SPLIT_ID}-$(uuidgen)
+export POPGYM_GPU=0.14
+export STORAGE_PATH="/local/ray_results-${UNIQ_SUFFIX}"
+export WANDB_CACHE_DIR="/local/wandb_cache-${UNIQ_SUFFIX}/"
+export WANDB_DIR="/local/wandb/wandb_dir-${UNIQ_SUFFIX}/"
 export WANDB_API_KEY=94c74292f8526ab421f054cd68b83ccc40277bc2
 #options="--export=ALL,POPGYM_EXPERIMENT='ALL_NOISY_ENVS',POPGYM_NUM_SPLITS=2,POPGYM_SPLIT_ID=0,POPGYM_PROJECT='popgym-noisy-all',POPGYM_GPU=0.1"
 options="--export=ALL"
